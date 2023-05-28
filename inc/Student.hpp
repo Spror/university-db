@@ -1,8 +1,8 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 struct Adress {
 
@@ -29,14 +29,20 @@ public:
   Student(std::string name, std::string lastName, Adress adress,
           std::vector<int> index, std::vector<int> pesel, Sex sex);
 
-    std::string getName() const {return name_;}
-    std::string getLastName() const {return lastName_;}
-    Adress getAddres() const {return adress_;}
-    std::vector<int> getIndex() const {return v_index_;}
-    std::vector<int> getPesel() const {return v_pesel_;}
-    Sex getSex() const {return sex_;}
+  std::string getName() const { return name_; }
+  std::string getLastName() const { return lastName_; }
+  Adress getAddres() const { return adress_; }
+  std::vector<int> getIndex() const { return v_index_; }
+  std::vector<int> getPesel() const { return v_pesel_; }
+  Sex getSex() const { return sex_; }
 
+
+  bool operator==(const Student &s1) const;
+  bool operator!=(const Student &s1) const;
 };
 
-std::ostream& operator<<(std::ostream& os, const Student& obj);
-std::ostream& operator<<(std::ostream& os, const Adress& obj); 
+
+std::ostream &operator<<(std::ostream &os, const Adress &adress);
+std::ostream &operator<<(std::ostream &os, const Student &obj);
+
+

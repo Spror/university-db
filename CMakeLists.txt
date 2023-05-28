@@ -19,21 +19,29 @@ FetchContent_MakeAvailable(googletest)
 ##########
 
 
-set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
+set(SRC 
+            src/Database.cpp
+            src/Student.cpp)
+
+
+
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc)
-set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/test)
-
-
-file(GLOB_RECURSE SOURCES ${SOURCE_DIR}/*.cpp)
 include_directories(${INCLUDE_DIR})
-add_executable(${PROJECT_NAME} ${SOURCES})
+
+
+
+
+add_library(${PROJECT_NAME}-lib STATIC ${SRC} )
+
+add_executable(${PROJECT_NAME} src/main.cpp ${INC})
+target_link_libraries(${PROJECT_NAME} ${PROJECT_NAME}-lib)
 
 
 # Creating test
 enable_testing()
-add_executable(${PROJECT_NAME}-test ${TEST_DIR}/test.cpp)
+add_executable(${PROJECT_NAME}-test test/test.cpp )
 target_link_libraries( ${PROJECT_NAME}-test
-                       GTest::gtest_main)
+                       GTest::gtest_main  ${PROJECT_NAME}-lib)
 
 
 include(GoogleTest)

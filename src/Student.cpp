@@ -51,6 +51,14 @@ std::ostream& operator<<(std::ostream& os, const Adress& obj) {
  {}
 
 
+bool  Student::operator==(const Student &s1) const{
+  return this->v_index_ == s1.getIndex() || s1.getPesel() == this->v_pesel_;
+}
+
+bool Student::operator!=( const Student &s1) const { 
+    return !(*this == s1);
+}
+
 
 
 
