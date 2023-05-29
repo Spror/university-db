@@ -4,17 +4,14 @@
 #include <iostream>
 #include <memory>
 
-
-class DataBaseTests : public ::testing::Test{
-  protected:
+class DataBaseTests : public ::testing::Test {
+protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
   std::vector<int> index{2, 4, 8, 9, 7, 0},
       pesel{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
   Database data;
-
 };
-
 
 class StudentTests : public ::testing::Test {
 protected:
@@ -46,7 +43,6 @@ TEST_F(StudentTests, OperatorEquality) {
   // ...
 }
 
-
 TEST_F(DataBaseTests, addingStudent) {
 
   data.add(student);
@@ -56,20 +52,18 @@ TEST_F(DataBaseTests, addingStudent) {
 
 TEST_F(DataBaseTests, studentDuplicationProtection) {
 
-
   EXPECT_EQ(data.add(student), 1);
   EXPECT_EQ(data.add(student), 0);
 }
 
-TEST_F(DataBaseTests, displaingDataBase){
+TEST_F(DataBaseTests, displaingDataBase) {
   data.add(student);
-  
-  // TO DO 
-  EXPECT_EQ(1,1);
 
+  // TO DO
+  EXPECT_EQ(1, 1);
 }
 
-TEST_F(DataBaseTests, searchByLastName){
+TEST_F(DataBaseTests, searchByLastName) {
 
   Student student2{"Patryk", "Puzon", adress, {1}, {2}, Sex::MALE};
   Student student3{"Kacper", "Kowalski", adress, {3}, {4}, Sex::MALE};
@@ -81,7 +75,7 @@ TEST_F(DataBaseTests, searchByLastName){
   data.add(student3);
   data.add(student4);
   data.add(student5);
-  
+
   // CHECK SEARCHING IF ONE CASE IN DATABASE
   EXPECT_EQ(data.searchByLastName("Puzon").size(), 1);
 
@@ -90,7 +84,30 @@ TEST_F(DataBaseTests, searchByLastName){
 
   // CHECK SEARCHING IF MORE THAN ONE CASE IN DATABASE
   EXPECT_EQ(data.searchByLastName("Kowalski").size(), 3);
+}
 
+TEST_F(DataBaseTests, searchByPesel) {
+
+
+  Student student2{"Kacper", "Kowalski", adress, {3}, {4}, Sex::MALE};
+  Student student3{"Czarek", "Nowak", {}, {5}, {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}, Sex::MALE};
+
+
+  data.add(student);
+  data.add(student2);
+  data.add(student3);
+
+
+
+
+  std::vector<Student> expected_1{student3}, expected_2{};
+  // CHECK SEARCHING IF ONE CASE IN DATABASE
+  EXPECT_EQ(data.searchByPesel({9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}), expected_1);
+
+
+  
+  // CHECK SEARCHING IF NONE CASE IN DATABASE
+  EXPECT_EQ(data.searchByLastName({1, 2, 44, 55}), expected_2);
 }
 
 

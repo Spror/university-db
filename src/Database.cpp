@@ -19,8 +19,7 @@ void Database::display() {
   }
 }
 
-template <typename F>
-auto Database::findStudent(const F*func){
+template <typename F> auto Database::findStudent(const F *func) {
   std::vector<Student> matchingStudents;
   std::copy_if(v_students_.begin(), v_students_.end(),
                std::back_inserter(matchingStudents), (*func));
@@ -35,11 +34,9 @@ std::vector<Student> Database::searchByLastName(std::string const lastName) {
 
   return findStudent(&condition);
 }
-// Student searchByLastName(std::string const lastName);
-// Student searchByIndex(std::vector<int> const index);
-// Student searchByPesel(std::vector<int> const index);
 
-// void sortbByPesel();
-// void sortByIndex();
+std::vector<Student> Database::searchByPesel(std::vector<int> const pesel) {
+  auto condition = [pesel](Student const &s) { return s.getPesel() == pesel; };
 
-// bool deleteByIndex(std::vector<int> const index);
+  return findStudent(&condition);
+}
