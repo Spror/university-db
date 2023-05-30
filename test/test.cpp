@@ -4,7 +4,8 @@
 #include <iostream>
 #include <memory>
 
-class DataBaseTests : public ::testing::Test {
+class DataBaseTests : public ::testing::Test
+{
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
   std::vector<int> index{2, 4, 8, 9, 7, 0},
@@ -13,7 +14,8 @@ protected:
   Database data;
 };
 
-class StudentTests : public ::testing::Test {
+class StudentTests : public ::testing::Test
+{
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
   std::vector<int> index{2, 4, 8, 9, 7, 0},
@@ -21,7 +23,8 @@ protected:
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
 };
 
-TEST_F(StudentTests, OperatorEquality) {
+TEST_F(StudentTests, OperatorEquality)
+{
 
   std::vector<int> index1{2, 4, 8, 9, 7, 0}, index2{1, 3, 5, 6, 6, 7};
   std::vector<int> pesel1{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
@@ -43,27 +46,31 @@ TEST_F(StudentTests, OperatorEquality) {
   // ...
 }
 
-TEST_F(DataBaseTests, addingStudent) {
+TEST_F(DataBaseTests, addingStudent)
+{
 
   data.add(student);
 
   EXPECT_EQ(data.getStudents()[0], student);
 }
 
-TEST_F(DataBaseTests, studentDuplicationProtection) {
+TEST_F(DataBaseTests, studentDuplicationProtection)
+{
 
   EXPECT_EQ(data.add(student), 1);
   EXPECT_EQ(data.add(student), 0);
 }
 
-TEST_F(DataBaseTests, displaingDataBase) {
+TEST_F(DataBaseTests, displaingDataBase)
+{
   data.add(student);
 
   // TO DO
   EXPECT_EQ(1, 1);
 }
 
-TEST_F(DataBaseTests, searchByLastName) {
+TEST_F(DataBaseTests, searchByLastName)
+{
 
   Student student2{"Patryk", "Puzon", adress, {1}, {2}, Sex::MALE};
   Student student3{"Kacper", "Kowalski", adress, {3}, {4}, Sex::MALE};
@@ -86,33 +93,61 @@ TEST_F(DataBaseTests, searchByLastName) {
   EXPECT_EQ(data.searchByLastName("Kowalski").size(), 3);
 }
 
-TEST_F(DataBaseTests, searchByPesel) {
-
+TEST_F(DataBaseTests, searchByPesel)
+{
 
   Student student2{"Kacper", "Kowalski", adress, {3}, {4}, Sex::MALE};
   Student student3{"Czarek", "Nowak", {}, {5}, {9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}, Sex::MALE};
-
 
   data.add(student);
   data.add(student2);
   data.add(student3);
 
-
-
-
   std::vector<Student> expected_1{student3}, expected_2{};
   // CHECK SEARCHING IF ONE CASE IN DATABASE
   EXPECT_EQ(data.searchByPesel({9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}), expected_1);
 
-
-  
   // CHECK SEARCHING IF NONE CASE IN DATABASE
   EXPECT_EQ(data.searchByLastName({1, 2, 44, 55}), expected_2);
 }
 
+TEST_F(DataBaseTests, sortByPesel)
+{
+  Student student2{"Patryk", "Puzon", adress, {1}, {2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {9, 23, 3, 4, 5, 6, 7, 8, 3, 11, 5}, Sex::MALE};
+  Student student4{"Czarek", "Nowak", {}, {5}, {1}, Sex::MALE};
+  Student student5{"Wiktoria", "Pozarska", adress, {7}, {1, 23, 3, 4, 5, 6, 7, 8, 9, 1, 6}, Sex::FEMALE};
+  Student student6{"Konstanty", "Smith", adress, {33}, {1, 23, 3, 4, 5, 6, 7, 2, 9, 1, 5}, Sex::MALE};
+  Student student7{"Czeslaw", "Gwint", {}, {54}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, Sex::MALE};
+  Student student8{"Wiktor", "Piotrowski", adress, {17}, {1, 2, 33, 11, 2, 2, 2, 2, 2, 2, 2}, Sex::MALE};
 
+  data.add(student5);
+  data.add(student4);
+  data.add(student3);
+  data.add(student2);
+  data.add(student);
+  data.add(student6);
+  data.add(student7);
+  data.add(student8);
 
-int main(int argc, char **argv) {
+  std::vector<Student> expected{student2, student3, student4, student5, student7, student6, student8, student};
+  
+  
+
+  EXPECT_NE(data.getStudents(), expected);
+  data.sortbByPesel();
+
+  for(const auto &it: data.getStudents()){
+    for(const auto &it2: it.getPesel())
+      std:: cout << it2;
+    std::cout << std::endl;
+  }
+ // EXPECT_EQ(data.getStudents(), expected);
+
+}
+
+int main(int argc, char **argv)
+{
 
   testing::InitGoogleTest(&argc, argv);
 

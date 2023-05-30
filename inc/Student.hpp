@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-struct Adress {
+struct Adress
+{
 
   std::string city{'-'};
   std::string street{'-'};
@@ -13,17 +14,22 @@ struct Adress {
   int flatNumber{NULL};
 };
 
-enum class Sex { MALE, FEMALE };
+enum class Sex
+{
+  MALE,
+  FEMALE
+};
 
-class Student {
+class Student
+{
 
 private:
-  std::string const name_;
-  std::string const lastName_;
+  std::string  name_;
+  std::string  lastName_;
   Adress adress_;
-  std::vector<int> const v_index_{6};
-  std::vector<int> const v_pesel_{11};
-  Sex const sex_;
+  std::vector<int>  v_index_{6};
+  std::vector<int>  v_pesel_{11};
+  Sex sex_;
 
 public:
   Student(std::string name, std::string lastName, Adress adress,
@@ -36,13 +42,9 @@ public:
   std::vector<int> getPesel() const { return v_pesel_; }
   Sex getSex() const { return sex_; }
 
-
   bool operator==(const Student &s1) const;
   bool operator!=(const Student &s1) const;
 };
 
-
 std::ostream &operator<<(std::ostream &os, const Adress &adress);
 std::ostream &operator<<(std::ostream &os, const Student &obj);
-
-
