@@ -3,6 +3,8 @@
 #include <iostream>
 #include <array>
 #include <cstdint>
+#include <algorithm>
+
 
 class Pesel {
     
