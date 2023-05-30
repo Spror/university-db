@@ -49,10 +49,10 @@ std::vector<Student> Database::searchByLastName(std::string const lastName)
     return findStudent(&condition);
 }
 
-std::vector<Student> Database::searchByPesel(std::array<uint8_t, 11> const pesel)
+std::vector<Student> Database::searchByPesel(Pesel const pesel)
 {
     auto condition = [pesel](Student const &s)
-    { return s.getPesel() == pesel; };
+    { return s.getPesel().getPesel() == pesel.getPesel(); };
 
     return findStudent(&condition);
 }
@@ -62,11 +62,11 @@ std::vector<Student> Database::searchByPesel(std::array<uint8_t, 11> const pesel
 
     auto condition = [](Student const &s1, Student const &s2)
     {
-        if(s1.getPesel().size() != s2.getPesel().size())
+        if(s1.getPesel().getPesel().size() != s2.getPesel().getPesel().size())
         {
-            return s1.getPesel().size() < s2.getPesel().size();
+            return s1.getPesel().getPesel().size() < s2.getPesel().getPesel().size();
         }
-        return std::lexicographical_compare((s1.getPesel()).begin(), (s1.getPesel()).end(), (s2.getPesel()).begin(), (s2.getPesel()).end());
+        return std::lexicographical_compare((s1.getPesel().getPesel()).begin(), (s1.getPesel().getPesel()).end(), (s2.getPesel().getPesel()).begin(), (s2.getPesel().getPesel()).end());
 
 
         // const auto& it = s1.getPesel().begin(), it2 = s1.getPesel().begin();

@@ -5,6 +5,8 @@
 #include <vector>
 #include <array>
 #include <cstdint>
+#include <Pesel.hpp>
+
 
 struct Adress
 {
@@ -30,18 +32,18 @@ private:
   std::string  lastName_;
   Adress adress_;
   std::array<uint8_t,6>  a_index_{6};
-  std::array<uint8_t, 11>  a_pesel_{11};
+  Pesel pesel_;
   Sex sex_;
 
 public:
   Student(std::string name, std::string lastName, Adress adress,
-          std::array<uint8_t,6>  index, std::array<uint8_t, 11> pesel, Sex sex);
+          std::array<uint8_t,6>  index, Pesel pesel, Sex sex);
 
   std::string getName() const { return name_; }
   std::string getLastName() const { return lastName_; }
   Adress getAddres() const { return adress_; }
   std::array<uint8_t,6>  getIndex() const { return a_index_; }
-  std::array<uint8_t, 11> getPesel() const { return a_pesel_; }
+  Pesel getPesel() const { return pesel_; }
   Sex getSex() const { return sex_; }
 
   bool operator==(const Student &s1) const;

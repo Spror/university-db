@@ -26,7 +26,7 @@ public:
     void display();
 
     std::vector<Student> searchByLastName(std::string const lastName);
-    std::vector<Student> searchByPesel(std::array<uint8_t, 11> const pesel);
+    std::vector<Student> searchByPesel(Pesel const pesel);
 
     void sortbByPesel();
     void sortByIndex();
