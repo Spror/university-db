@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <array>
+#include <cstdint>
 
 struct Adress
 {
@@ -27,19 +29,19 @@ private:
   std::string  name_;
   std::string  lastName_;
   Adress adress_;
-  std::vector<int>  v_index_{6};
-  std::vector<int>  v_pesel_{11};
+  std::array<uint8_t,6>  a_index_{6};
+  std::array<uint8_t, 11>  a_pesel_{11};
   Sex sex_;
 
 public:
   Student(std::string name, std::string lastName, Adress adress,
-          std::vector<int> index, std::vector<int> pesel, Sex sex);
+          std::array<uint8_t,6>  index, std::array<uint8_t, 11> pesel, Sex sex);
 
   std::string getName() const { return name_; }
   std::string getLastName() const { return lastName_; }
   Adress getAddres() const { return adress_; }
-  std::vector<int> getIndex() const { return v_index_; }
-  std::vector<int> getPesel() const { return v_pesel_; }
+  std::array<uint8_t,6>  getIndex() const { return a_index_; }
+  std::array<uint8_t, 11> getPesel() const { return a_pesel_; }
   Sex getSex() const { return sex_; }
 
   bool operator==(const Student &s1) const;

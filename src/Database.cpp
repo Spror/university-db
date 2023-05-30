@@ -49,7 +49,7 @@ std::vector<Student> Database::searchByLastName(std::string const lastName)
     return findStudent(&condition);
 }
 
-std::vector<Student> Database::searchByPesel(std::vector<int> const pesel)
+std::vector<Student> Database::searchByPesel(std::array<uint8_t, 11> const pesel)
 {
     auto condition = [pesel](Student const &s)
     { return s.getPesel() == pesel; };

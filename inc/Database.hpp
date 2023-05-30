@@ -26,10 +26,10 @@ public:
     void display();
 
     std::vector<Student> searchByLastName(std::string const lastName);
-    std::vector<Student> searchByPesel(std::vector<int> const index);
+    std::vector<Student> searchByPesel(std::array<uint8_t, 11> const pesel);
 
     void sortbByPesel();
     void sortByIndex();
 
-    bool deleteByIndex(std::vector<int> const index);
+   // bool deleteByIndex(std::vector<int> const index);
 };

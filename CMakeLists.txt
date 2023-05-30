@@ -21,7 +21,8 @@ FetchContent_MakeAvailable(googletest)
 
 set(SRC 
             src/Database.cpp
-            src/Student.cpp)
+            src/Student.cpp
+            src/Pesel.cpp)
 
 
 

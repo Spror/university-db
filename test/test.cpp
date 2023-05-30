@@ -8,8 +8,8 @@ class DataBaseTests : public ::testing::Test
 {
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
-  std::vector<int> index{2, 4, 8, 9, 7, 0},
-      pesel{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
+  std::array<uint8_t, 6> index{2, 4, 8, 9, 7, 0};
+  std::array<uint8_t, 11> pesel{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
   Database data;
 };
@@ -18,16 +18,16 @@ class StudentTests : public ::testing::Test
 {
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
-  std::vector<int> index{2, 4, 8, 9, 7, 0},
-      pesel{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
+  std::array<uint8_t, 6>  index{2, 4, 8, 9, 7, 0};
+  std::array<uint8_t, 11>  pesel{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
 };
 
 TEST_F(StudentTests, OperatorEquality)
 {
 
-  std::vector<int> index1{2, 4, 8, 9, 7, 0}, index2{1, 3, 5, 6, 6, 7};
-  std::vector<int> pesel1{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
+  std::array<uint8_t, 6> index1{2, 4, 8, 9, 7, 0}, index2{1, 3, 5, 6, 6, 7};
+  std::array<uint8_t, 11>  pesel1{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9},
       pesel2{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5};
 
   Student student2{"Patryk", "Puzon", adress, index1, pesel1, Sex::MALE};
@@ -131,19 +131,17 @@ TEST_F(DataBaseTests, sortByPesel)
   data.add(student8);
 
   std::vector<Student> expected{student2, student3, student4, student5, student7, student6, student8, student};
-  
-  
 
   EXPECT_NE(data.getStudents(), expected);
   data.sortbByPesel();
 
-  for(const auto &it: data.getStudents()){
-    for(const auto &it2: it.getPesel())
-      std:: cout << it2;
+  for (const auto &it : data.getStudents())
+  {
+    for (const auto &it2 : it.getPesel())
+      std::cout << static_cast<int>(it2);
     std::cout << std::endl;
   }
- // EXPECT_EQ(data.getStudents(), expected);
-
+  // EXPECT_EQ(data.getStudents(), expected);
 }
 
 int main(int argc, char **argv)

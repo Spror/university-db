@@ -24,13 +24,13 @@ std::ostream &operator<<(std::ostream &os, const Student &obj)
     std::cout << "\n Index number: ";
     for (const auto &it : obj.getIndex())
     {
-        std::cout << it;
+        std::cout << static_cast<int>(it);
     }
 
     std::cout << "\n PESEL number: ";
     for (const auto &it : obj.getPesel())
     {
-        std::cout << it;
+        std::cout << static_cast<int>(it);
     }
 
     std::cout << "\n"
@@ -49,14 +49,14 @@ std::ostream &operator<<(std::ostream &os, const Adress &obj)
     return os;
 }
 
-Student::Student(std::string name, std::string lastName, Adress adress, std::vector<int> index, std::vector<int> pesel, Sex sex)
-    : name_{name}, lastName_{lastName}, adress_{adress}, v_index_{index}, v_pesel_{pesel}, sex_{sex}
+Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, std::array<uint8_t, 11> pesel, Sex sex)
+    : name_{name}, lastName_{lastName}, adress_{adress}, a_index_{index}, a_pesel_{pesel}, sex_{sex}
 {
 }
 
 bool Student::operator==(const Student &s1) const
 {
-    return this->v_index_ == s1.getIndex() || s1.getPesel() == this->v_pesel_;
+    return this->a_index_ == s1.getIndex() || s1.getPesel() == this->a_pesel_;
 }
 
 bool Student::operator!=(const Student &s1) const
