@@ -22,7 +22,7 @@ private:
 public:
     bool add(Student const &student);
     std::vector<Student> getStudents() const { return v_students_; }
-
+    auto getDatabaseSize() const {return v_students_.size();}
     void display();
 
     std::vector<Student> searchByLastName(std::string const lastName);
@@ -31,5 +31,5 @@ public:
     void sortbByPesel();
     void sortByLastName();
 
-   // bool deleteByIndex(std::vector<int> const index);
+    bool deleteByIndex(std::array<uint8_t,6> const index);
 };

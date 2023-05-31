@@ -31,7 +31,7 @@ private:
   std::string  name_;
   std::string  lastName_;
   Adress adress_;
-  std::array<uint8_t,6>  a_index_{6};
+  std::array<uint8_t,6>  a_index_;
   Pesel pesel_;
   Sex sex_;
 

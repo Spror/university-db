@@ -166,6 +166,33 @@ TEST_F(DataBaseTests, sortByLastName)
   EXPECT_EQ(data.getStudents(), expected);
 }
 
+
+TEST_F(DataBaseTests, deleteByIndex)
+{
+  Student student2{"Patryk", "Puzon", adress, {1}, {{2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {{9, 3, 3, 4, 5, 6, 7, 8, 3, 1, 5}}, Sex::MALE};
+  Student student4{"Czarek", "Nowak", {}, {5}, {{1}}, Sex::MALE};
+  Student student5{"Wiktoria", "Pozarska", adress, {7}, {{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE};
+  Student student6{"Konstanty", "Smith", adress, {33}, {{1, 2, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
+  Student student7{"Czeslaw", "Gwint", {}, {54}, {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}}, Sex::MALE};
+  Student student8{"Wiktor", "Adamski", adress, {17}, {{1, 2, 3, 1, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
+
+  data.add(student5);
+  data.add(student4);
+  data.add(student3);
+  data.add(student2);
+  data.add(student);
+  data.add(student6);
+  data.add(student7);
+  data.add(student8);
+
+
+  auto sizeBefore = data.getDatabaseSize();
+  
+  EXPECT_EQ(data.deleteByIndex({5}), 1);
+  EXPECT_LT(data.getDatabaseSize(), sizeBefore);
+}
+
 int main(int argc, char **argv)
 {
 
