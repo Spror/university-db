@@ -9,7 +9,7 @@ class DataBaseTests : public ::testing::Test
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
   std::array<uint8_t, 6> index{2, 4, 8, 9, 7, 0};
-  Pesel pesel{{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5}};
+  Pesel pesel{{1, 3, 3, 4, 5, 6, 7, 8, 9, 1, 5}};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
   Database data;
 };
@@ -19,7 +19,7 @@ class StudentTests : public ::testing::Test
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
   std::array<uint8_t, 6>  index{2, 4, 8, 9, 7, 0};
-  Pesel pesel{{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5}};
+  Pesel pesel{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
 };
 
@@ -28,7 +28,7 @@ TEST_F(StudentTests, OperatorEquality)
 
   std::array<uint8_t, 6> index1{2, 4, 8, 9, 7, 0}, index2{1, 3, 5, 6, 6, 7};
   Pesel  pesel1{{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}},
-      pesel2{{1, 23, 3, 4, 5, 6, 7, 8, 9, 11, 5}};
+      pesel2{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}};
 
   Student student2{"Patryk", "Puzon", adress, index1, pesel1, Sex::MALE};
   Student student3{"Kacper", "Kowalski", adress, index2, pesel2, Sex::MALE};
@@ -114,12 +114,12 @@ TEST_F(DataBaseTests, searchByPesel)
 TEST_F(DataBaseTests, sortByPesel)
 {
   Student student2{"Patryk", "Puzon", adress, {1}, {{2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}}, Sex::MALE};
-  Student student3{"Kacper", "Kowalski", adress, {3}, {{9, 23, 3, 4, 5, 6, 7, 8, 3, 11, 5}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {{9, 3, 3, 4, 5, 6, 7, 8, 3, 1, 5}}, Sex::MALE};
   Student student4{"Czarek", "Nowak", {}, {5}, {{1}}, Sex::MALE};
-  Student student5{"Wiktoria", "Pozarska", adress, {7}, {{1, 23, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE};
-  Student student6{"Konstanty", "Smith", adress, {33}, {{1, 23, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
+  Student student5{"Wiktoria", "Pozarska", adress, {7}, {{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE};
+  Student student6{"Konstanty", "Smith", adress, {33}, {{1, 2, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
   Student student7{"Czeslaw", "Gwint", {}, {54}, {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}}, Sex::MALE};
-  Student student8{"Wiktor", "Piotrowski", adress, {17}, {{1, 2, 33, 11, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
+  Student student8{"Wiktor", "Piotrowski", adress, {17}, {{1, 2, 3, 1, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
 
   data.add(student5);
   data.add(student4);
@@ -130,18 +130,40 @@ TEST_F(DataBaseTests, sortByPesel)
   data.add(student7);
   data.add(student8);
 
-  std::vector<Student> expected{student2, student3, student4, student5, student7, student6, student8, student};
+  std::vector<Student> expected{student4, student7, student8, student6,  student5, student, student2, student3};
+
 
   EXPECT_NE(data.getStudents(), expected);
   data.sortbByPesel();
+  EXPECT_EQ(data.getStudents(), expected);
+}
 
-  for (const auto &it : data.getStudents())
-  {
-    for (const auto &it2 : it.getPesel().getPesel())
-      std::cout << static_cast<int>(it2);
-    std::cout << std::endl;
-  }
-  // EXPECT_EQ(data.getStudents(), expected);
+
+TEST_F(DataBaseTests, sortByLastName)
+{
+  Student student2{"Patryk", "Puzon", adress, {1}, {{2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {{9, 3, 3, 4, 5, 6, 7, 8, 3, 1, 5}}, Sex::MALE};
+  Student student4{"Czarek", "Nowak", {}, {5}, {{1}}, Sex::MALE};
+  Student student5{"Wiktoria", "Pozarska", adress, {7}, {{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE};
+  Student student6{"Konstanty", "Smith", adress, {33}, {{1, 2, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
+  Student student7{"Czeslaw", "Gwint", {}, {54}, {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}}, Sex::MALE};
+  Student student8{"Wiktor", "Adamski", adress, {17}, {{1, 2, 3, 1, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
+
+  data.add(student5);
+  data.add(student4);
+  data.add(student3);
+  data.add(student2);
+  data.add(student);
+  data.add(student6);
+  data.add(student7);
+  data.add(student8);
+
+  std::vector<Student> expected{student8, student7, student3, student, student4,  student5,  student2, student6};
+
+
+  EXPECT_NE(data.getStudents(), expected);
+  data.sortByLastName();
+  EXPECT_EQ(data.getStudents(), expected);
 }
 
 int main(int argc, char **argv)

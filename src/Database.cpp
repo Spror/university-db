@@ -34,7 +34,8 @@ auto Database::findStudent(const F *func)
 }
 
 template <typename F>
-void Database::sortStudents(const F *func){
+void Database::sortStudents(const F *func)
+{
     std::sort(v_students_.begin(), v_students_.end(), (*func));
 }
 
@@ -52,27 +53,40 @@ std::vector<Student> Database::searchByLastName(std::string const lastName)
 std::vector<Student> Database::searchByPesel(Pesel const pesel)
 {
     auto condition = [pesel](Student const &s)
-    { return s.getPesel().getPesel() == pesel.getPesel(); };
+    {
+        return s.getPesel().getPesel() == pesel.getPesel();
+    };
 
     return findStudent(&condition);
 }
 
-
- void Database::sortbByPesel(){
+void Database::sortbByPesel()
+{
 
     auto condition = [](Student const &s1, Student const &s2)
     {
-        if(s1.getPesel().getPesel().size() != s2.getPesel().getPesel().size())
+        if (s1.getPesel().getPesel().size() != s2.getPesel().getPesel().size())
         {
             return s1.getPesel().getPesel().size() < s2.getPesel().getPesel().size();
         }
-        return std::lexicographical_compare((s1.getPesel().getPesel()).begin(), (s1.getPesel().getPesel()).end(), (s2.getPesel().getPesel()).begin(), (s2.getPesel().getPesel()).end());
-
+        return std::lexicographical_compare(
+            (s1.getPesel().getPesel()).begin(), (s1.getPesel().getPesel()).end(),
+            (s2.getPesel().getPesel()).begin(), (s2.getPesel().getPesel()).end());
 
         // const auto& it = s1.getPesel().begin(), it2 = s1.getPesel().begin();
         // fot(; (it == s1.getPesel().end()))
     };
 
     sortStudents(&condition);
+}
 
- }
+void Database::sortByLastName()
+{
+
+    auto condition = [](Student const &s1, Student const &s2)
+    {
+        return s1.getLastName() < s2.getLastName();
+    };
+
+    sortStudents(&condition);
+}

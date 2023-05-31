@@ -4,6 +4,7 @@ Pesel::Pesel(std::array<uint8_t, 11> pesel) : a_pesel_{pesel}
 {
     if(!checkDigit()){
         std::cerr << "Wrong pesel number - one of the entered values is not a digit" << std::endl;
+        exit(-1);
     }
 }
 

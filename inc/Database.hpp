@@ -29,7 +29,7 @@ public:
     std::vector<Student> searchByPesel(Pesel const pesel);
 
     void sortbByPesel();
-    void sortByIndex();
+    void sortByLastName();
 
    // bool deleteByIndex(std::vector<int> const index);
 };
