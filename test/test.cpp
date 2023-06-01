@@ -1,5 +1,6 @@
 #include <Database.hpp>
 #include <Student.hpp>
+#include <Pesel.hpp>
 #include <gtest/gtest.h>
 #include <iostream>
 #include <memory>
@@ -18,7 +19,7 @@ class StudentTests : public ::testing::Test
 {
 protected:
   Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
-  std::array<uint8_t, 6>  index{2, 4, 8, 9, 7, 0};
+  std::array<uint8_t, 6> index{2, 4, 8, 9, 7, 0};
   Pesel pesel{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}};
   Student student{"Wiktor", "Kowalski", adress, index, pesel, Sex::MALE};
 };
@@ -27,7 +28,7 @@ TEST_F(StudentTests, OperatorEquality)
 {
 
   std::array<uint8_t, 6> index1{2, 4, 8, 9, 7, 0}, index2{1, 3, 5, 6, 6, 7};
-  Pesel  pesel1{{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}},
+  Pesel pesel1{{9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9}},
       pesel2{{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}};
 
   Student student2{"Patryk", "Puzon", adress, index1, pesel1, Sex::MALE};
@@ -130,14 +131,12 @@ TEST_F(DataBaseTests, sortByPesel)
   data.add(student7);
   data.add(student8);
 
-  std::vector<Student> expected{student4, student7, student8, student6,  student5, student, student2, student3};
-
+  std::vector<Student> expected{student4, student7, student8, student6, student5, student, student2, student3};
 
   EXPECT_NE(data.getStudents(), expected);
   data.sortbByPesel();
   EXPECT_EQ(data.getStudents(), expected);
 }
-
 
 TEST_F(DataBaseTests, sortByLastName)
 {
@@ -158,14 +157,12 @@ TEST_F(DataBaseTests, sortByLastName)
   data.add(student7);
   data.add(student8);
 
-  std::vector<Student> expected{student8, student7, student3, student, student4,  student5,  student2, student6};
-
+  std::vector<Student> expected{student8, student7, student3, student, student4, student5, student2, student6};
 
   EXPECT_NE(data.getStudents(), expected);
   data.sortByLastName();
   EXPECT_EQ(data.getStudents(), expected);
 }
-
 
 TEST_F(DataBaseTests, deleteByIndex)
 {
@@ -186,11 +183,21 @@ TEST_F(DataBaseTests, deleteByIndex)
   data.add(student7);
   data.add(student8);
 
-
   auto sizeBefore = data.getDatabaseSize();
-  
+
   EXPECT_EQ(data.deleteByIndex({5}), 1);
   EXPECT_LT(data.getDatabaseSize(), sizeBefore);
+}
+
+TEST(PeseleTest, PeselValidationTest)
+{
+  Pesel pesel_1({5, 5, 0, 3, 0, 1, 0, 1, 1, 9, 3}), pesel_2({9, 9, 0, 2, 2, 7, 0, 0, 1, 5, 7}),
+        pesel_3({1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5}), pesel_4({5, 5, 0, 3, 0, 1, 0, 1, 2, 3, 0});
+
+  EXPECT_EQ(pesel_1.peselValidation(), 1); // Standard PESEL #1
+  EXPECT_EQ(pesel_2.peselValidation(), 1); // Standard PESEL #2
+  EXPECT_NE(pesel_3.peselValidation(), 1); // Wrong PESEL
+  EXPECT_EQ(pesel_4.peselValidation(), 1); // Standard PESEL - checksum = 0
 }
 
 int main(int argc, char **argv)

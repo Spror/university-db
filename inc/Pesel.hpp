@@ -21,6 +21,13 @@ class Pesel {
      */
     bool checkDigit();
 
+    /* 
+     * Function to check whether pesel is valid according to 
+     * https://pl.wikipedia.org/wiki/PESEL#Cyfra_kontrolna_i_sprawdzanie_poprawno%C5%9Bci_numeru
+     * @return true - if it is valid else false
+     */
+    bool peselValidation();
+
 
     
 
