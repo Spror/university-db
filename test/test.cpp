@@ -189,6 +189,26 @@ TEST_F(DataBaseTests, deleteByIndex)
   EXPECT_LT(data.getDatabaseSize(), sizeBefore);
 }
 
+TEST_F(DataBaseTests, writingToFile)
+{
+
+  Student student2{"Patryk", "Puzon", adress, {1}, {{2}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {{4}}, Sex::MALE};
+  Student student4{"Czarek", "Nowak", {}, {5}, {{6}}, Sex::MALE};
+  Student student5{"Wiktor", "Kowalski", adress, {7}, {{8}}, Sex::MALE};
+
+  data.add(student);
+  data.add(student2);
+  data.add(student3);
+  data.add(student4);
+  data.add(student5);
+
+  data.sortByLastName();
+
+  data.display();
+  EXPECT_EQ(data.saveToFile("dane#1.txt"), 1);
+}
+
 TEST(PeseleTest, PeselValidationTest)
 {
   Pesel pesel_1({5, 5, 0, 3, 0, 1, 0, 1, 1, 9, 3}), pesel_2({9, 9, 0, 2, 2, 7, 0, 0, 1, 5, 7}),

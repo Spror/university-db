@@ -2,8 +2,12 @@
 
 std::ostream &operator<<(std::ostream &os, const Student &obj)
 {
-    os << "#### Student data:"
-       << "\n Name: " << obj.getName()
+    os << "#### Student ";
+    for (const auto &it : obj.getIndex())
+    {
+        os << static_cast<int>(it);
+    } 
+     os  << "\n Name: " << obj.getName()
        << "\n Last name: " << obj.getLastName();
 
     auto sex = obj.getSex();
@@ -11,30 +15,26 @@ std::ostream &operator<<(std::ostream &os, const Student &obj)
     switch (sex)
     {
     case Sex::MALE:
-        std::cout << "\n Sex: Male";
+        os << "\n Sex: Male";
         break;
     case Sex::FEMALE:
-        std::cout << "\n Sex: Female";
+        os << "\n Sex: Female";
         break;
 
     default:
-        break;
+     break;
     }
 
-    std::cout << "\n Index number: ";
-    for (const auto &it : obj.getIndex())
-    {
-        std::cout << static_cast<int>(it);
-    }
+   
 
-    std::cout << "\n PESEL number: ";
+    os << "\n PESEL number: ";
     for (const auto &it : obj.getPesel().getPesel())
     {
-        std::cout << static_cast<int>(it);
+        os << static_cast<int>(it);
     }
 
-    std::cout << "\n"
-              << obj.getAddres();
+    os << "\n"
+       << obj.getAddres();
     return os;
 }
 

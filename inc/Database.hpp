@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <fstream>
 
 class Database
 {
@@ -32,4 +33,6 @@ public:
     void sortByLastName();
 
     bool deleteByIndex(std::array<uint8_t,6> const index);
+
+    bool saveToFile(const std::string &filename);
 };

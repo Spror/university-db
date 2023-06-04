@@ -91,22 +91,47 @@ void Database::sortByLastName()
     sortStudents(&condition);
 }
 
-bool Database::deleteByIndex(std::array<uint8_t,6> const index){
+bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
+{
 
     auto condition = [index](Student const &s)
     {
         return s.getIndex() == index;
     };
-    
 
-    auto  toDelete = std::find_if(v_students_.begin(), v_students_.end(), condition);
-    
-    if(toDelete != v_students_.end())
+    auto toDelete = std::find_if(v_students_.begin(), v_students_.end(), condition);
+
+    if (toDelete != v_students_.end())
     {
         v_students_.erase(toDelete);
         return true;
     }
-     
 
     return false;
+}
+
+bool Database::saveToFile(const std::string &filename)
+{
+    std::ofstream file(filename);
+
+    if (file.is_open())
+    {
+        for (auto const &student : v_students_)
+        {
+            file << student << "\n";
+        }
+
+        file.close();
+
+        if (file.fail())
+        {
+            std::cerr << "Failed to close the file" << std::endl;
+            return false;
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
