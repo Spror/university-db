@@ -205,8 +205,34 @@ TEST_F(DataBaseTests, writingToFile)
 
   data.sortByLastName();
 
-  data.display();
   EXPECT_EQ(data.saveToFile("dane#1.txt"), 1);
+}
+
+TEST_F(DataBaseTests, readingFromFile)
+{
+
+  Student student2{"Patryk", "Puzon", adress, {1}, {{2}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", adress, {3}, {{4}}, Sex::MALE};
+  Student student4{"Czarek", "Nowak", {}, {5}, {{6}}, Sex::MALE};
+  Student student5{"Wiktor", "Kowalski", adress, {7}, {{8}}, Sex::MALE};
+
+  data.add(student);
+  data.add(student2);
+  data.add(student3);
+  data.add(student4);
+  data.add(student5);
+
+  data.sortByLastName();
+  Database data2;
+
+  EXPECT_EQ(data.saveToFile("dane#1.txt"), 1);
+  EXPECT_EQ(data2.readFromFile("dane#1.txt"), 1);
+  auto vec1 = data.getStudents(), vec2=data2.getStudents();
+
+  for(auto i = 0; i < vec1.size(); i++ ){
+    EXPECT_EQ(vec1[i],vec2[i]);
+  }
+  
 }
 
 TEST(PeseleTest, PeselValidationTest)

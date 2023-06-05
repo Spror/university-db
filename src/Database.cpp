@@ -135,3 +135,103 @@ bool Database::saveToFile(const std::string &filename)
         return false;
     }
 }
+
+bool Database::readFromFile(const std::string &filename)
+{
+
+    std::ifstream inputFile(filename);
+    std::string line, index_str, name, lastName, pesel_str, sex_str, city, street, postCode;
+    Sex sex;
+
+    if (inputFile.is_open())
+    {
+        while (std::getline(inputFile, line))
+        {
+            if (line.find("#### Student") != std::string::npos)
+            {
+                index_str = line.substr(line.find("Student ") + 8);
+
+                std::getline(inputFile, line);
+                name = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line);
+                lastName = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line);
+                sex_str = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line);
+                pesel_str = line.substr(line.find(": ") + 2);
+                
+
+                std::getline(inputFile, line); // Skip the Address data line
+
+                std::getline(inputFile, line); // Read the City line
+                city = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line); // Read the Street line
+                street = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line); // Read the Post-code line
+                postCode = line.substr(line.find(": ") + 2);
+
+                std::getline(inputFile, line); // Read the Apartment number line
+                auto apartamentNumber = std::stoi(line.substr(line.find(": ") + 2));
+
+                std::getline(inputFile, line); // Read the Flat number line
+                auto flatNumber = std::stoi(line.substr(line.find(": ") + 2));
+                
+                if(sex_str == "Male")
+                {
+                    sex = Sex::MALE;
+                }
+                else    
+                    sex = Sex::FEMALE;
+
+                auto pesel = stringToPesel(pesel_str);
+                auto index = stringToIndex(index_str);
+                
+                Student temp{name, lastName, {city, street, postCode, apartamentNumber, flatNumber }, index, {pesel}, sex};
+                add(temp);
+            }
+        }
+    }
+    else
+    {
+        std::cerr << "Failed to open the file" << std::endl;
+        return false;
+    }
+
+    return true;
+}
+
+std::array<uint8_t, 6> Database::stringToIndex(std::string index_str)
+{
+    std::array<uint8_t, 6> a_index;
+    size_t inc{0};
+    if (index_str.size() == 6)
+    {
+        for (const auto &it : index_str)
+        {
+            a_index[inc++] = it - '0';
+        }
+    }
+
+    return a_index;
+}
+
+std::array<uint8_t, 11> Database::stringToPesel(std::string pesel_str)
+{
+
+    std::array<uint8_t, 11> a_pesel;
+    size_t inc{0};
+    if (pesel_str.size() == 11)
+    {
+        for (const auto &it : pesel_str)
+        {
+            a_pesel[inc++] = it - '0';
+        }
+    }
+
+    return a_pesel;
+}

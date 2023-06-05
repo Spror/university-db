@@ -32,14 +32,10 @@ int main()
     // for(const auto &it: dataBase1.getStudents()){
     //     std::cout << it << std::endl;
     // }
-    std::array<uint8_t, 11> pp{1,1,1,1,9,2,1,1,1,1,1};
-    Pesel pesel{pp};
 
-    if(pesel.checkDigit()){
-        for(const auto &it: pesel.getPesel()){
-            std::cout << static_cast<int>(it) << std::endl;
-        }
-    }
+    Database data;
+
+    data.readFromFile("dane#1.txt");
 
     return 0;
 }
