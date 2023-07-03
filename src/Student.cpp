@@ -50,16 +50,7 @@ std::ostream &operator<<(std::ostream &os, const Adress &obj)
 }
 
 Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
-    : name_{name}, lastName_{lastName}, adress_{adress}, a_index_{index}, pesel_{pesel}, sex_{sex}
+    : Person(name, lastName, adress, pesel, sex), a_index_{index}
 {
 }
 
-bool Student::operator==(const Student &s1) const
-{
-    return this->a_index_ == s1.getIndex() || s1.getPesel().getPesel() == this->pesel_.getPesel();
-}
-
-bool Student::operator!=(const Student &s1) const
-{
-    return !(*this == s1);
-}

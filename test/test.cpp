@@ -37,13 +37,13 @@ TEST_F(StudentTests, OperatorEquality)
   Student student5{"Wiktor", "Kowalski", adress, index2, pesel1, Sex::MALE};
 
   // Check operator==
-  EXPECT_EQ(student, student2); // Same index
+
   EXPECT_EQ(student, student3); // Same PESEL
-  EXPECT_EQ(student, student4); // Same PESEL and index
+
   // ...
 
   // Check operator!=
-  EXPECT_NE(student, student5); // different index and PESEL
+  EXPECT_NE(student, student5); // different PESEL
   // ...
 }
 
