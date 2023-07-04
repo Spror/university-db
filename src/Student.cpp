@@ -1,16 +1,20 @@
 #include <Student.hpp>
+Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
+    : Person(name, lastName, adress, pesel, sex), a_index_{index}
+{
+}
 
-std::ostream &operator<<(std::ostream &os, const Student &obj)
+std::ostream& Student::output(std::ostream& os) const
 {
     os << "#### Student ";
-    for (const auto &it : obj.getIndex())
+    for (const auto &it : getIndex())
     {
         os << static_cast<int>(it);
     } 
-     os  << "\n Name: " << obj.getName()
-       << "\n Last name: " << obj.getLastName();
+     os  << "\n Name: " << getName()
+       << "\n Last name: " << getLastName();
 
-    auto sex = obj.getSex();
+    auto sex = getSex();
 
     switch (sex)
     {
@@ -28,29 +32,14 @@ std::ostream &operator<<(std::ostream &os, const Student &obj)
    
 
     os << "\n PESEL number: ";
-    for (const auto &it : obj.getPesel().getPesel())
+    for (const auto &it : getPesel().getPesel())
     {
         os << static_cast<int>(it);
     }
 
     os << "\n"
-       << obj.getAddres();
+       << getAddres();
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const Adress &obj)
-{
-    os << " #### Adress data:"
-       << "\n  City: " << obj.city
-       << "\n  Street: " << obj.street
-       << "\n  Post-code: " << obj.postCode
-       << "\n  Apartament number: " << obj.apartamentNumber
-       << "\n  Flat number: " << obj.flatNumber;
-    return os;
-}
-
-Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
-    : Person(name, lastName, adress, pesel, sex), a_index_{index}
-{
-}
 
