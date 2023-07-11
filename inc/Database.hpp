@@ -15,7 +15,6 @@ class Database
 {
 
 private:
-    std::vector<Student> v_students_;
 
     std::vector<std::shared_ptr<Person>> v_persons_;
     template <typename F>
@@ -28,7 +27,8 @@ private:
     std::array<uint8_t, 11> stringToPesel(std::string pesel_str);
 
 public:
-    bool add(Person const &student);
+    bool add(Student const &student);
+    bool add(Employee const &employee);
     std::vector<std::shared_ptr<Person>> getPersons() const { return v_persons_; }
     auto getDatabaseSize() const {return v_persons_.size();}
     void display();
@@ -39,7 +39,7 @@ public:
     void sortbByPesel();
     void sortByLastName();
 
-    //bool deleteByIndex(std::array<uint8_t,6> const index);
+    bool deleteByIndex(std::array<uint8_t,6> const index);
 
     bool saveToFile(const std::string &filename);
     bool readFromFile(const std::string &filename);

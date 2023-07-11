@@ -1,27 +1,37 @@
 #include <Database.hpp>
 
-bool Database::add(Person const &person)
+bool Database::add(Student const &student)
 {
     for (const auto &it : v_persons_)
     {
-        if (*it.get() == person)
+        if (*it.get() == student)
         {
-            std::cerr << "There exist that student in database" << std::endl;
+            std::cerr << "There exist that person in database" << std::endl;
             return false;
         }
     }
 
-    
-    if(person.getProffesion() == "Employee")
-    {
-        v_persons_.push_back(std::make_shared<Employee>(person));
-    }
-    else{
-        v_persons_.push_back(std::make_shared<Student>(person));
-    }
-    
+    std::shared_ptr<Person> sharedPtr = std::make_shared<Student>(student);
+    v_persons_.push_back(sharedPtr);
     return true;
 }
+
+bool Database::add(Employee const &employee)
+{
+    for (const auto &it : v_persons_)
+    {
+        if (*it.get() == employee)
+        {
+            std::cerr << "There exist that person in database" << std::endl;
+            return false;
+        }
+    }
+
+    std::shared_ptr<Person> sharedPtr = std::make_shared<Employee>(employee);
+    v_persons_.push_back(sharedPtr);
+    return true;
+}
+
 
 void Database::display()
 {
@@ -81,8 +91,8 @@ void Database::sortbByPesel()
             ((*s1.get()).getPesel().getPesel()).begin(), ((*s1.get()).getPesel().getPesel()).end(),
             ((*s2.get()).getPesel().getPesel()).begin(), ((*s2.get()).getPesel().getPesel()).end());
 
-        // const auto& it = s1.getPesel().begin(), it2 = s1.getPesel().begin();
-        // fot(; (it == s1.getPesel().end()))
+        // const auto& it = (*s1.get()).getPesel().getPesel().begin(), it2 = (*s1.get()).getPesel().getPesel().begin();
+        // for(; (it == (*s1.get()).getPesel().getPesel().end());)
     };
 
     sortStudents(&condition);
@@ -99,28 +109,29 @@ void Database::sortByLastName()
     sortStudents(&condition);
 }
 
-// bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
-// {
+bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
+{
 
-//     // auto condition = [index](std::shared_ptr<Person> const &s)
-//     // {
-//     //     if((*s.get()).getProffesion() == "Student")
-//     //     {
-//     //         //Student temp = (*s.get());
-//     //     }
-//     //        // return (*s.get()).getIndex() == index;
-//     // };
+    auto condition = [index](std::shared_ptr<Person> const &s)
+    {
+        if((*s.get()).getProffesion() == "Student")
+        {
+            Student temp = (*(std::dynamic_pointer_cast<Student>(s)).get());
+            return temp.getIndex() == index;
+        }
+           return false;
+    };
 
-//    // auto toDelete = std::find_if(v_students_.begin(), v_students_.end(), condition);
+    auto toDelete = std::find_if(v_persons_.begin(), v_persons_.end(), condition);
 
-//     // if (toDelete != v_students_.end())
-//     // {
-//     //     v_students_.erase(toDelete);
-//     //     return true;
-//     // }
+        if (toDelete != v_persons_.end())
+        {
+            v_persons_.erase(toDelete);
+            return true;
+        }
 
-//      return false;
-// }
+     return false;
+}
 
 bool Database::saveToFile(const std::string &filename)
 {
@@ -128,9 +139,9 @@ bool Database::saveToFile(const std::string &filename)
 
     if (file.is_open())
     {
-        for (auto const &student : v_students_)
+        for (auto const &person_ptr : v_persons_)
         {
-            file << student << "\n";
+            file << person_ptr.get() << "\n";
         }
 
         file.close();
@@ -204,7 +215,7 @@ bool Database::readFromFile(const std::string &filename)
                 auto index = stringToIndex(index_str);
                 
                 Student temp{name, lastName, {city, street, postCode, apartamentNumber, flatNumber }, index, {pesel}, sex};
-                add(temp);
+                //add(temp);
             }
         }
     }
