@@ -1,16 +1,13 @@
-#include <Student.hpp>
-Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
-    : Person(name, lastName, adress, pesel, sex), a_index_{index}
+#include <Employee.hpp>
+
+Employee::Employee(std::string name, std::string lastName, Adress adress, Pesel pesel,
+                   Sex sex, float salary) : Person(name, lastName, adress, pesel, sex), salary_{salary}
 {
 }
 
-std::ostream &Student::output(std::ostream &os) const
+std::ostream &Employee::output(std::ostream &os) const
 {
-    os << "#### Student ";
-    for (const auto &it : a_index_)
-    {
-        os << static_cast<int>(it);
-    }
+    os << "#### Employee ";
     os << "\n Name: " << name_
        << "\n Last name: " << lastName_;
 
@@ -27,6 +24,7 @@ std::ostream &Student::output(std::ostream &os) const
         break;
     }
 
+    os << "\n Salary: " << salary_ << " zl";
     os << "\n PESEL number: ";
     for (const auto &it : pesel_.getPesel())
     {

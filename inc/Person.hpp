@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <Pesel.hpp>
+#include <string>
 
 enum class Sex
 {
@@ -27,8 +27,9 @@ protected:
     Pesel pesel_;
     Sex sex_;
 
-public: 
-    Person(std::string name, std::string lastName, Adress adress, Pesel pesel, Sex sex);
+public:
+    Person(std::string name, std::string lastName, Adress adress, Pesel pesel,
+           Sex sex);
 
     std::string getName() const { return name_; }
     std::string getLastName() const { return lastName_; }
@@ -39,7 +40,10 @@ public:
     bool operator==(const Person &s1) const;
     bool operator!=(const Person &s1) const;
 
-
-   // virtual std::ostream &operator<<(std::ostream &os) const;
-    //virtual std::string getProfession();
+    virtual std::ostream& output(std::ostream& os) const = 0;
+    virtual std::string getProffesion() const = 0;
+    virtual ~Person() = default;
 };
+
+std::ostream &operator<<(std::ostream &os, const Adress &adress);
+inline std::ostream &operator<<(std::ostream &os, const Person &obj) { return obj.output(os); }

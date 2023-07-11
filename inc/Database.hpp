@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Student.hpp>
+#include <Employee.hpp>
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -8,6 +9,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <memory>
 
 class Database
 {
@@ -15,6 +17,7 @@ class Database
 private:
     std::vector<Student> v_students_;
 
+    std::vector<std::shared_ptr<Person>> v_persons_;
     template <typename F>
     auto findStudent(const F *func);
 
@@ -25,18 +28,18 @@ private:
     std::array<uint8_t, 11> stringToPesel(std::string pesel_str);
 
 public:
-    bool add(Student const &student);
-    std::vector<Student> getStudents() const { return v_students_; }
-    auto getDatabaseSize() const {return v_students_.size();}
+    bool add(Person const &student);
+    std::vector<std::shared_ptr<Person>> getPersons() const { return v_persons_; }
+    auto getDatabaseSize() const {return v_persons_.size();}
     void display();
 
-    std::vector<Student> searchByLastName(std::string const lastName);
-    std::vector<Student> searchByPesel(Pesel const pesel);
+    std::vector<std::shared_ptr<Person>> searchByLastName(std::string const lastName);
+    std::vector<std::shared_ptr<Person>> searchByPesel(Pesel const pesel);
 
     void sortbByPesel();
     void sortByLastName();
 
-    bool deleteByIndex(std::array<uint8_t,6> const index);
+    //bool deleteByIndex(std::array<uint8_t,6> const index);
 
     bool saveToFile(const std::string &filename);
     bool readFromFile(const std::string &filename);

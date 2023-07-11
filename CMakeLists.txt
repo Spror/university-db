@@ -23,7 +23,8 @@ set(SRC
             src/Database.cpp
             src/Student.cpp
             src/Pesel.cpp
-            src/Person.cpp)
+            src/Person.cpp
+            src/Employee.cpp)
 
 
 

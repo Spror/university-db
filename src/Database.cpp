@@ -1,34 +1,42 @@
 #include <Database.hpp>
 
-bool Database::add(Student const &student)
+bool Database::add(Person const &person)
 {
-    for (const auto &it : v_students_)
+    for (const auto &it : v_persons_)
     {
-        if (student == it)
+        if (*it.get() == person)
         {
             std::cerr << "There exist that student in database" << std::endl;
             return false;
         }
     }
 
-    v_students_.push_back(student);
+    
+    if(person.getProffesion() == "Employee")
+    {
+        v_persons_.push_back(std::make_shared<Employee>(person));
+    }
+    else{
+        v_persons_.push_back(std::make_shared<Student>(person));
+    }
+    
     return true;
 }
 
 void Database::display()
 {
 
-    for (const auto &it : v_students_)
+    for (const auto &it : v_persons_)
     {
-        std::cout << it << std::endl;
+        std::cout << *it.get() << std::endl;
     }
 }
 
 template <typename F>
 auto Database::findStudent(const F *func)
 {
-    std::vector<Student> matchingStudents;
-    std::copy_if(v_students_.begin(), v_students_.end(),
+    std::vector<std::shared_ptr<Person>> matchingStudents;
+    std::copy_if(v_persons_.begin(), v_persons_.end(),
                  std::back_inserter(matchingStudents), (*func));
     return matchingStudents;
 }
@@ -36,25 +44,25 @@ auto Database::findStudent(const F *func)
 template <typename F>
 void Database::sortStudents(const F *func)
 {
-    std::sort(v_students_.begin(), v_students_.end(), (*func));
+    std::sort(v_persons_.begin(), v_persons_.end(), (*func));
 }
 
-std::vector<Student> Database::searchByLastName(std::string const lastName)
+std::vector<std::shared_ptr<Person>> Database::searchByLastName(std::string const lastName)
 {
 
-    auto condition = [lastName](Student const &s)
+    auto condition = [lastName](std::shared_ptr<Person> const &s)
     {
-        return s.getLastName() == lastName;
+        return (*s.get()).getLastName() == lastName;
     };
 
     return findStudent(&condition);
 }
 
-std::vector<Student> Database::searchByPesel(Pesel const pesel)
+std::vector<std::shared_ptr<Person>> Database::searchByPesel(Pesel const pesel)
 {
-    auto condition = [pesel](Student const &s)
+    auto condition = [pesel](std::shared_ptr<Person> const &s)
     {
-        return s.getPesel().getPesel() == pesel.getPesel();
+        return (*s.get()).getPesel().getPesel() == pesel.getPesel();
     };
 
     return findStudent(&condition);
@@ -63,15 +71,15 @@ std::vector<Student> Database::searchByPesel(Pesel const pesel)
 void Database::sortbByPesel()
 {
 
-    auto condition = [](Student const &s1, Student const &s2)
+    auto condition = [](std::shared_ptr<Person> const &s1, std::shared_ptr<Person> const &s2)
     {
-        if (s1.getPesel().getPesel().size() != s2.getPesel().getPesel().size())
+        if ((*s1.get()).getPesel().getPesel().size() != (*s2.get()).getPesel().getPesel().size())
         {
-            return s1.getPesel().getPesel().size() < s2.getPesel().getPesel().size();
+            return (*s1.get()).getPesel().getPesel().size() < (*s2.get()).getPesel().getPesel().size();
         }
         return std::lexicographical_compare(
-            (s1.getPesel().getPesel()).begin(), (s1.getPesel().getPesel()).end(),
-            (s2.getPesel().getPesel()).begin(), (s2.getPesel().getPesel()).end());
+            ((*s1.get()).getPesel().getPesel()).begin(), ((*s1.get()).getPesel().getPesel()).end(),
+            ((*s2.get()).getPesel().getPesel()).begin(), ((*s2.get()).getPesel().getPesel()).end());
 
         // const auto& it = s1.getPesel().begin(), it2 = s1.getPesel().begin();
         // fot(; (it == s1.getPesel().end()))
@@ -83,32 +91,36 @@ void Database::sortbByPesel()
 void Database::sortByLastName()
 {
 
-    auto condition = [](Student const &s1, Student const &s2)
+    auto condition = [](std::shared_ptr<Person> const &s1, std::shared_ptr<Person>  const &s2)
     {
-        return s1.getLastName() < s2.getLastName();
+        return (*s1.get()).getLastName() < (*s2.get()).getLastName();
     };
 
     sortStudents(&condition);
 }
 
-bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
-{
+// bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
+// {
 
-    auto condition = [index](Student const &s)
-    {
-        return s.getIndex() == index;
-    };
+//     // auto condition = [index](std::shared_ptr<Person> const &s)
+//     // {
+//     //     if((*s.get()).getProffesion() == "Student")
+//     //     {
+//     //         //Student temp = (*s.get());
+//     //     }
+//     //        // return (*s.get()).getIndex() == index;
+//     // };
 
-    auto toDelete = std::find_if(v_students_.begin(), v_students_.end(), condition);
+//    // auto toDelete = std::find_if(v_students_.begin(), v_students_.end(), condition);
 
-    if (toDelete != v_students_.end())
-    {
-        v_students_.erase(toDelete);
-        return true;
-    }
+//     // if (toDelete != v_students_.end())
+//     // {
+//     //     v_students_.erase(toDelete);
+//     //     return true;
+//     // }
 
-    return false;
-}
+//      return false;
+// }
 
 bool Database::saveToFile(const std::string &filename)
 {
