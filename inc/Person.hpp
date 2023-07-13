@@ -40,7 +40,7 @@ public:
     bool operator==(const Person &s1) const;
     bool operator!=(const Person &s1) const;
 
-    virtual std::ostream& output(std::ostream& os) const = 0;
+    virtual std::ostream &output(std::ostream &os) const = 0;
     virtual std::string getProffesion() const = 0;
     virtual ~Person() = default;
 };

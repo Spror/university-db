@@ -4,9 +4,9 @@ Student::Student(std::string name, std::string lastName, Adress adress, std::arr
 {
 }
 
-std::ostream &Student::output(std::ostream &os) const
+std::ostream & Student::output(std::ostream &os) const
 {
-    os << "#### Student ";
+    os << "#### Student " << "\n Index: ";
     for (const auto &it : a_index_)
     {
         os << static_cast<int>(it);
@@ -37,3 +37,4 @@ std::ostream &Student::output(std::ostream &os) const
        << adress_;
     return os;
 }
+

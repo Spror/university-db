@@ -18,9 +18,7 @@ public:
   Student(std::string name, std::string lastName, Adress adress,
           std::array<uint8_t, 6> index, Pesel pesel, Sex sex);
 
-   std::array<uint8_t, 6> getIndex() const { return a_index_; }
-  virtual std::ostream& output(std::ostream& os) const;
-  virtual std::string getProffesion() const {return "Student";}
+  std::array<uint8_t, 6> getIndex() const { return a_index_; }
+  virtual std::ostream &output(std::ostream &os) const;
+  virtual std::string getProffesion() const { return "Student"; }
 };
-
-
