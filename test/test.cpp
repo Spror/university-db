@@ -94,9 +94,9 @@ TEST_F(DataBaseTests, searchByPesel)
     Student expected_1{student1};
     Employee expected_2{employee1};
     // CHECK SEARCHING IF ONE CASE IN DATABASE
-    auto returnedStudent_ptr = data.searchByPesel({{6}})[0];
+    auto returnedStudent_ptr = data.searchByPesel({{6}});
     Student returnedStudent = *(std::dynamic_pointer_cast<Student>(returnedStudent_ptr).get());
-    auto returnedEmployee_ptr = data.searchByPesel({{1}})[0];
+    auto returnedEmployee_ptr = data.searchByPesel({{1}});
     Employee returnedEmployee = *(std::dynamic_pointer_cast<Employee>(returnedEmployee_ptr).get());
 
    EXPECT_EQ(returnedStudent, expected_1);
@@ -229,6 +229,38 @@ TEST_F(DataBaseTests, readingFromFile)
   for(auto i = 0; i < vec1.size(); i++ ){
     EXPECT_EQ(*(vec1[i].get()),*(vec2[i].get()));
   }
+
+}
+
+TEST_F(DataBaseTests, SalaryModifying)
+{
+
+
+
+  data.add(student1);
+  data.add(student2);
+  data.add(student3);
+  data.add(employee1);
+  data.add(employee2);
+  data.add(employee3);
+
+  auto pesel = employee1.getPesel();
+  float newSalary = 8900.90;
+  float lastSalary = employee1.getSalary();
+
+  // check whether salaries are not equal
+  EXPECT_NE(newSalary, lastSalary);
+
+  // try to modify employee1's salary 
+  EXPECT_EQ(data.modifySalary(pesel, newSalary), 1);
+
+  auto person = *(std::dynamic_pointer_cast<Employee>(data.searchByPesel(pesel)));
+
+
+  EXPECT_EQ(person.getPesel(), pesel);
+
+  //check whether the salary has changed
+  EXPECT_EQ(person.getSalary(), newSalary);
 
 }
 

@@ -68,14 +68,14 @@ std::vector<std::shared_ptr<Person>> Database::searchByLastName(std::string cons
     return findStudent(&condition);
 }
 
-std::vector<std::shared_ptr<Person>> Database::searchByPesel(Pesel const pesel)
+std::shared_ptr<Person> Database::searchByPesel(Pesel const pesel)
 {
     auto condition = [pesel](std::shared_ptr<Person> const &s)
     {
-        return (*s.get()).getPesel().getPesel() == pesel.getPesel();
+        return (*s.get()).getPesel() == pesel;
     };
 
-    return findStudent(&condition);
+    return findStudent(&condition)[0];
 }
 
 void Database::sortbByPesel()
@@ -133,6 +133,32 @@ bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
      return false;
 }
 
+bool Database::modifySalary(Pesel pesel, float newSalary)
+{
+
+    auto condition = [pesel](std::shared_ptr<Person> const &s)
+    {
+        if((*s.get()).getProffesion() == "Employee")
+        {
+            Employee temp = (*(std::dynamic_pointer_cast<Employee>(s)).get());
+            return temp.getPesel() == pesel;
+        }
+           return false;
+    };
+
+    auto toModify = std::find_if(v_persons_.begin(), v_persons_.end(), condition);
+
+        if (toModify != v_persons_.end())
+        {
+            Employee *temp = (std::dynamic_pointer_cast<Employee>(toModify[0])).get();
+            temp->setSalary(newSalary);
+            return true;
+        }
+
+        return false;
+}
+
+
 bool Database::saveToFile(const std::string &filename)
 {
     auto inc = 0;
@@ -142,7 +168,7 @@ bool Database::saveToFile(const std::string &filename)
     {
         for (auto const &person_ptr : v_persons_)
         {
-            file << ++inc << " " << *(person_ptr.get()) << "\n";
+            file  << *(person_ptr.get()) << "\n";
         }
 
         file.close();
@@ -162,154 +188,32 @@ bool Database::saveToFile(const std::string &filename)
 
 bool Database::readFromFile(const std::string &filename)
 {
-
     std::ifstream inputFile(filename);
-    std::string line, index_str, name, lastName, pesel_str, sex_str, city, street, postCode;
-    Sex sex;
+    std::string line;
 
-    if (inputFile.is_open())
-    {
-        while (std::getline(inputFile, line))
-        {
-            if (line.find("#### Student") != std::string::npos )
-            {
-                //index_str = line.substr(line.find("Student ") + 8);
-
-                std::getline(inputFile, line);
-                index_str = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                name = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                lastName = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                sex_str = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                pesel_str = line.substr(line.find(": ") + 2);
-                
-
-                std::getline(inputFile, line); // Skip the Address data line
-
-                std::getline(inputFile, line); // Read the City line
-                city = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Street line
-                street = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Post-code line
-                postCode = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Apartment number line
-                auto apartamentNumber = std::stoi(line.substr(line.find(": ") + 2));
-
-                std::getline(inputFile, line); // Read the Flat number line
-                auto flatNumber = std::stoi(line.substr(line.find(": ") + 2));
-                
-                if(sex_str == "Male")
-                {
-                    sex = Sex::MALE;
-                }
-                else    
-                    sex = Sex::FEMALE;
-
-                auto pesel = stringToPesel(pesel_str);
-                auto index = stringToIndex(index_str);
-                
-                Student temp{name, lastName, {city, street, postCode, apartamentNumber, flatNumber }, index, {pesel}, sex};
-
-                std::shared_ptr<Person> sharedPtr = std::make_shared<Student>(temp);
-                v_persons_.push_back(sharedPtr);
-            }
-            else if (line.find("#### Student") != std::string::npos )
-            {
-
-
-                std::getline(inputFile, line);
-                name = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                lastName = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                sex_str = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line);
-                pesel_str = line.substr(line.find(": ") + 2);
-                
-
-                std::getline(inputFile, line); // Skip the Address data line
-
-                std::getline(inputFile, line); // Read the City line
-                city = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Street line
-                street = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Post-code line
-                postCode = line.substr(line.find(": ") + 2);
-
-                std::getline(inputFile, line); // Read the Apartment number line
-                auto apartamentNumber = std::stoi(line.substr(line.find(": ") + 2));
-
-                std::getline(inputFile, line); // Read the Flat number line
-                auto flatNumber = std::stoi(line.substr(line.find(": ") + 2));
-                
-                if(sex_str == "Male")
-                {
-                    sex = Sex::MALE;
-                }
-                else    
-                    sex = Sex::FEMALE;
-
-                auto pesel = stringToPesel(pesel_str);
-                auto index = stringToIndex(index_str);
-                
-                Employee temp{name, lastName, {city, street, postCode, apartamentNumber, flatNumber },  {pesel}, sex};
-
-                std::shared_ptr<Person> sharedPtr = std::make_shared<Student>(temp);
-                v_persons_.push_back(sharedPtr);
-            }
-        }
-    }
-    else
-    {
-        std::cerr << "Failed to open the file" << std::endl;
+    if (!inputFile.is_open()) {
+        std::cerr << "Failed to open the file." << std::endl;
         return false;
     }
+    
 
+    while (std::getline(inputFile, line))
+    {
+        if (line.find("#### Student") != std::string::npos)
+        {
+            Student temp;
+            inputFile >> temp;
+            v_persons_.push_back(std::make_shared<Student>(temp));
+
+        }
+        else if(line.find("#### Employee") != std::string::npos)
+        {
+            Employee temp; 
+            inputFile >> temp;
+            v_persons_.push_back(std::make_shared<Employee>(temp));
+
+        }
+    }
     return true;
 }
 
-std::array<uint8_t, 6> Database::stringToIndex(std::string index_str)
-{
-    std::array<uint8_t, 6> a_index;
-    size_t inc{0};
-    if (index_str.size() == 6)
-    {
-        for (const auto &it : index_str)
-        {
-            a_index[inc++] = it - '0';
-        }
-    }
-
-    return a_index;
-}
-
-std::array<uint8_t, 11> Database::stringToPesel(std::string pesel_str)
-{
-
-    std::array<uint8_t, 11> a_pesel;
-    size_t inc{0};
-    if (pesel_str.size() == 11)
-    {
-        for (const auto &it : pesel_str)
-        {
-            a_pesel[inc++] = it - '0';
-        }
-    }
-
-    return a_pesel;
-}

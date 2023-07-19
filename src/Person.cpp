@@ -27,4 +27,19 @@ std::ostream &operator<<(std::ostream &os, const Adress &obj)
     return os;
 }
 
+std::array<uint8_t, 11> Person::stringToPesel(std::string pesel_str) const
+{
+
+    std::array<uint8_t, 11> a_pesel;
+    size_t inc{0};
+    if (pesel_str.size() == 11)
+    {
+        for (const auto &it : pesel_str)
+        {
+            a_pesel[inc++] = it - '0';
+        }
+    }
+
+    return a_pesel;
+}
 

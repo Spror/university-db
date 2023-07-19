@@ -16,7 +16,8 @@ class Pesel {
     std::array<uint8_t, 11> getPesel() const {return a_pesel_;}
 
     bool checkDigit();
-
+    bool operator==(const Pesel &s1) const;
+    bool operator!=(const Pesel &s1) const;
     bool peselValidation();
 
 

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
-#include <fstream>
+
 #include <sstream>
 #include <memory>
 
@@ -23,8 +23,8 @@ private:
     template <typename F>
     void sortStudents(const F *func);
 
-    std::array<uint8_t, 6> stringToIndex(std::string index_str);
-    std::array<uint8_t, 11> stringToPesel(std::string pesel_str);
+    
+    
 
 public:
     bool add(Student const &student);
@@ -34,10 +34,11 @@ public:
     void display();
 
     std::vector<std::shared_ptr<Person>> searchByLastName(std::string const lastName);
-    std::vector<std::shared_ptr<Person>> searchByPesel(Pesel const pesel);
+    std::shared_ptr<Person>  searchByPesel(Pesel const pesel);
 
     void sortbByPesel();
     void sortByLastName();
+    bool modifySalary(Pesel pesel, float newSalary);
 
     bool deleteByIndex(std::array<uint8_t,6> const index);
 

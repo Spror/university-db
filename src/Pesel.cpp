@@ -46,3 +46,15 @@ bool Pesel::peselValidation(){
     return false;
 
 }
+
+
+    bool Pesel::operator==(const Pesel &s1) const
+    {
+        return a_pesel_ == s1.a_pesel_;
+    }
+
+
+    bool Pesel::operator!=(const Pesel &s1) const
+    {
+        return !(*this == s1);
+    }
