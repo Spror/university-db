@@ -248,6 +248,25 @@ TEST_F(DataBaseTests, SalaryModifying)
   EXPECT_EQ(person.getSalary(), newSalary);
 }
 
+TEST_F(DataBaseTests, SortBySalary)
+{
+  data.add(student3);
+  data.add(employee1);
+  data.add(employee2);
+  data.add(employee3);
+
+  std::vector<Person *> expected{&employee1, &employee3, &employee2, &student3};
+
+  EXPECT_NE(data.getPersons()[0].get()->getPesel(), expected[0]->getPesel());
+  data.sortBySalary();
+  data.display();
+  EXPECT_EQ(data.getPersons()[0].get()->getPesel(), expected[0]->getPesel());
+  EXPECT_EQ(data.getPersons()[1].get()->getPesel(), expected[1]->getPesel());
+  EXPECT_EQ(data.getPersons()[2].get()->getPesel(), expected[2]->getPesel());
+  EXPECT_EQ(data.getPersons()[3].get()->getPesel(), expected[3]->getPesel());
+
+}
+
 // TEST_F(DataBaseTests, displaingDataBase)
 // {
 //   data.add(student);

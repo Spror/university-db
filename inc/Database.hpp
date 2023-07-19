@@ -25,17 +25,21 @@ private:
 public:
     bool add(Student const &student);
     bool add(Employee const &employee);
-    std::vector<std::shared_ptr<Person>> getPersons() const { return v_persons_; }
+
+    
     auto getDatabaseSize() const { return v_persons_.size(); }
+    
     void display();
 
+    std::vector<std::shared_ptr<Person>> getPersons() const { return v_persons_; }
     std::vector<std::shared_ptr<Person>> searchByLastName(std::string const lastName);
     std::shared_ptr<Person> searchByPesel(Pesel const pesel);
 
     void sortbByPesel();
     void sortByLastName();
-    bool modifySalary(Pesel pesel, float newSalary);
+    void sortBySalary();
 
+    bool modifySalary(Pesel pesel, float newSalary);
     bool deleteByIndex(std::array<uint8_t, 6> const index);
 
     bool saveToFile(const std::string &filename);

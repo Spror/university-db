@@ -108,6 +108,31 @@ void Database::sortByLastName()
     sortStudents(&condition);
 }
 
+void Database::sortBySalary()
+{
+    auto condition = [](std::shared_ptr<Person> const &s1, std::shared_ptr<Person> const &s2)
+    {
+        if ((*s1.get()).getProffesion() == "Employee" && (*s2.get()).getProffesion() == "Employee")
+        {
+            return (*(std::dynamic_pointer_cast<Employee>(s1)).get()).getSalary() > (*(std::dynamic_pointer_cast<Employee>(s2)).get()).getSalary();
+        }
+        else if((*s1.get()).getProffesion() == "Employee" && (*s2.get()).getProffesion() == "Student")
+        {
+            return true;
+        }
+        else if((*s1.get()).getProffesion() == "Student" && (*s2.get()).getProffesion() == "Employee")
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    };
+
+    sortStudents(&condition);
+}
+
 bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
 {
 
@@ -212,3 +237,5 @@ bool Database::readFromFile(const std::string &filename)
     }
     return true;
 }
+
+ void sortBySalary();
