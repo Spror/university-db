@@ -2,7 +2,8 @@
 
 Pesel::Pesel(std::array<uint8_t, 11> pesel) : a_pesel_{pesel}
 {
-    if(!checkDigit()){
+    if (!checkDigit())
+    {
         std::cerr << "Wrong pesel number - one of the entered values is not a digit" << std::endl;
         exit(-1);
     }
@@ -23,38 +24,38 @@ bool Pesel::checkDigit()
     return true;
 }
 
-bool Pesel::peselValidation(){
+bool Pesel::peselValidation()
+{
     constexpr std::array<uint8_t, 10> a_coefficients{1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
 
     auto iter_pesel = a_pesel_.begin();
     auto iter_coeff = a_coefficients.begin();
     uint checksum{0};
 
-    for(; iter_coeff != a_coefficients.end(); iter_coeff++, iter_pesel++){
-        checksum += *iter_coeff*(*iter_pesel);
+    for (; iter_coeff != a_coefficients.end(); iter_coeff++, iter_pesel++)
+    {
+        checksum += *iter_coeff * (*iter_pesel);
     }
 
     checksum %= 10;
 
-    if(checksum != 0){
+    if (checksum != 0)
+    {
         checksum = 10 - checksum;
     }
 
-    if(checksum == a_pesel_[10])
+    if (checksum == a_pesel_[10])
         return true;
 
     return false;
-
 }
 
+bool Pesel::operator==(const Pesel &s1) const
+{
+    return a_pesel_ == s1.a_pesel_;
+}
 
-    bool Pesel::operator==(const Pesel &s1) const
-    {
-        return a_pesel_ == s1.a_pesel_;
-    }
-
-
-    bool Pesel::operator!=(const Pesel &s1) const
-    {
-        return !(*this == s1);
-    }
+bool Pesel::operator!=(const Pesel &s1) const
+{
+    return !(*this == s1);
+}
