@@ -1,0 +1,5 @@
+if(EXISTS "/home/spror/cxx/university-db/build/university-db-test[1]_tests.cmake")
+  include("/home/spror/cxx/university-db/build/university-db-test[1]_tests.cmake")
+else()
+  add_test(university-db-test_NOT_BUILT university-db-test_NOT_BUILT)
+endif()

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/university-db.dir/src/main.cpp.o -o university-db  libuniversity-db-lib.a 

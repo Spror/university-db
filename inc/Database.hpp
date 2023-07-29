@@ -38,6 +38,7 @@ public:
     void sortbByPesel();
     void sortByLastName();
     void sortBySalary();
+    void generateData(size_t personNumber);
 
     bool modifySalary(Pesel pesel, float newSalary);
     bool deleteByIndex(std::array<uint8_t, 6> const index);

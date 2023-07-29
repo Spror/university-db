@@ -238,4 +238,7 @@ bool Database::readFromFile(const std::string &filename)
     return true;
 }
 
- void sortBySalary();
+void Database::generateData(size_t personNumber)
+{
+
+}

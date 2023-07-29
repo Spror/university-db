@@ -1,0 +1,73 @@
+DATA BASE SIZE => 6
+#### Student 
+ Index: 200000
+ Name: Wiktor
+ Last name: Kowalski
+ Sex: Male
+ PESEL number: 30000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
+#### Employee 
+ Name: Kacper
+ Last name: Kowalski
+ Sex: Male
+ Salary: 6700 zl
+ PESEL number: 10000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
+#### Employee 
+ Name: Kacper
+ Last name: Kowalski
+ Sex: Male
+ Salary: 2322 zl
+ PESEL number: 40000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
+#### Employee 
+ Name: Kacper
+ Last name: Kowalski
+ Sex: Male
+ Salary: 6210 zl
+ PESEL number: 50000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
+#### Student 
+ Index: 100000
+ Name: Czarek
+ Last name: Nowak
+ Sex: Male
+ PESEL number: 20000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
+#### Student 
+ Index: 000000
+ Name: Patryk
+ Last name: Puzon
+ Sex: Male
+ PESEL number: 60000000000
+ #### Adress data:
+  City: -
+  Street: -
+  Post-code: -
+  Apartament number: 0
+  Flat number: 0
