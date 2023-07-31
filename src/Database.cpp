@@ -112,15 +112,15 @@ void Database::sortBySalary()
 {
     auto condition = [](std::shared_ptr<Person> const &s1, std::shared_ptr<Person> const &s2)
     {
-        if ((*s1.get()).getProffesion() == "Employee" && (*s2.get()).getProffesion() == "Employee")
+        if ((*s1.get()).getProfession() == "Employee" && (*s2.get()).getProfession() == "Employee")
         {
             return (*(std::dynamic_pointer_cast<Employee>(s1)).get()).getSalary() > (*(std::dynamic_pointer_cast<Employee>(s2)).get()).getSalary();
         }
-        else if((*s1.get()).getProffesion() == "Employee" && (*s2.get()).getProffesion() == "Student")
+        else if((*s1.get()).getProfession() == "Employee" && (*s2.get()).getProfession() == "Student")
         {
             return true;
         }
-        else if((*s1.get()).getProffesion() == "Student" && (*s2.get()).getProffesion() == "Employee")
+        else if((*s1.get()).getProfession() == "Student" && (*s2.get()).getProfession() == "Employee")
         {
             return false;
         }
@@ -138,7 +138,7 @@ bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
 
     auto condition = [index](std::shared_ptr<Person> const &s)
     {
-        if ((*s.get()).getProffesion() == "Student")
+        if ((*s.get()).getProfession() == "Student")
         {
             Student temp = (*(std::dynamic_pointer_cast<Student>(s)).get());
             return temp.getIndex() == index;
@@ -162,7 +162,7 @@ bool Database::modifySalary(Pesel pesel, float newSalary)
 
     auto condition = [pesel](std::shared_ptr<Person> const &s)
     {
-        if ((*s.get()).getProffesion() == "Employee")
+        if ((*s.get()).getProfession() == "Employee")
         {
             Employee temp = (*(std::dynamic_pointer_cast<Employee>(s)).get());
             return temp.getPesel() == pesel;
@@ -240,5 +240,23 @@ bool Database::readFromFile(const std::string &filename)
 
 void Database::generateData(size_t personNumber)
 {
+    std::string command = "python3 ../scripts/generatePerson.py";
+    std::string output;
 
+        FILE* pipe = popen(command.c_str(), "r");
+    if (pipe == nullptr) {
+        std::cerr << "Error running Python script." << std::endl;
+        exit(-1);
+    }
+
+    char buffer[128];
+    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+        output += buffer;
+    }
+
+    pclose(pipe);
+
+    // Display the output
+    std::cout << "Output of script.py:" << std::endl;
+    std::cout << output << std::endl;
 }

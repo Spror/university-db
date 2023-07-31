@@ -1,6 +1,6 @@
 #include <Employee.hpp>
 
-Employee::Employee(std::string name, std::string lastName, Adress adress, Pesel pesel,
+Employee::Employee(std::string name, std::string lastName, std::string adress, Pesel pesel,
                    Sex sex, float salary) : Person(name, lastName, adress, pesel, sex), salary_{salary}
 {
 }
@@ -8,7 +8,7 @@ Employee::Employee(std::string name, std::string lastName, Adress adress, Pesel 
 std::ostream &Employee::output(std::ostream &os) const
 {
 
-    os << "#### Employee ";
+    os << "\n#### Employee ";
     os << "\n Name: " << name_
        << "\n Last name: " << lastName_;
 
@@ -32,8 +32,7 @@ std::ostream &Employee::output(std::ostream &os) const
         os << static_cast<int>(it);
     }
 
-    os << "\n"
-       << adress_;
+    os << "\n Adress: " << adress_;
     return os;
 }
 
@@ -61,22 +60,8 @@ std::ifstream &Employee::input(std::ifstream &ifs)
     std::getline(ifs, line);
     pesel_str = line.substr(line.find(": ") + 2);
 
-    std::getline(ifs, line); // Skip the Address data line
-
-    std::getline(ifs, line); // Read the City line
-    adress_.city = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Street line
-    adress_.street = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Post-code line
-    adress_.postCode = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Apartment number line
-    adress_.apartamentNumber = std::stoi(line.substr(line.find(": ") + 2));
-
-    std::getline(ifs, line); // Read the Flat number line
-    adress_.flatNumber = std::stoi(line.substr(line.find(": ") + 2));
+    std::getline(ifs, line); 
+    adress_= line.substr(line.find(": ") + 2);
 
     if (sex_str == "Male")
     {

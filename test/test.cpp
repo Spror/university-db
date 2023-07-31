@@ -22,7 +22,7 @@ protected:
 class DataBaseTests : public ::testing::Test
 {
 protected:
-  Adress adress{"Wroclaw", "Grunwaldzka", "54-300", 15, 32};
+
   std::array<uint8_t, 6> index{2, 4, 8, 9, 7, 0};
 
   Student student1{"Patryk", "Puzon", {}, {{0}}, {{6}}, Sex::MALE};
@@ -129,13 +129,13 @@ TEST_F(DataBaseTests, sortByPesel)
 
 TEST_F(DataBaseTests, sortByLastName)
 {
-  Student student2{"Patryk", "Puzon", adress, {1}, {{2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}}, Sex::MALE};
-  Student student3{"Kacper", "Kowalski", adress, {3}, {{9, 3, 3, 4, 5, 6, 7, 8, 3, 1, 5}}, Sex::MALE};
+  Student student2{"Patryk", "Puzon", {}, {1}, {{2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 5}}, Sex::MALE};
+  Student student3{"Kacper", "Kowalski", {}, {3}, {{9, 3, 3, 4, 5, 6, 7, 8, 3, 1, 5}}, Sex::MALE};
   Student student4{"Czarek", "Nowak", {}, {5}, {{1}}, Sex::MALE};
-  Employee employee1{"Wiktoria", "Pozarska", adress, {{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE, 7373.0};
-  Student student6{"Konstanty", "Smith", adress, {33}, {{1, 2, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
+  Employee employee1{"Wiktoria", "Pozarska", {}, {{1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 6}}, Sex::FEMALE, 7373.0};
+  Student student6{"Konstanty", "Smith", {}, {33}, {{1, 2, 3, 4, 5, 6, 7, 2, 9, 1, 5}}, Sex::MALE};
   Employee employee2{"Czeslaw", "Gwint", {}, {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}}, Sex::MALE, 3930.0};
-  Student student8{"Wiktor", "Adamski", adress, {17}, {{1, 2, 3, 1, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
+  Student student8{"Wiktor", "Adamski", {}, {17}, {{1, 2, 3, 1, 2, 2, 2, 2, 2, 2, 2}}, Sex::MALE};
 
   data.add(employee1);
   data.add(student4);
@@ -264,6 +264,12 @@ TEST_F(DataBaseTests, SortBySalary)
   EXPECT_EQ(data.getPersons()[1].get()->getPesel(), expected[1]->getPesel());
   EXPECT_EQ(data.getPersons()[2].get()->getPesel(), expected[2]->getPesel());
   EXPECT_EQ(data.getPersons()[3].get()->getPesel(), expected[3]->getPesel());
+
+}
+
+TEST_F(DataBaseTests, GenerateRandomPerson)
+{
+  data.generateData(1);
 
 }
 

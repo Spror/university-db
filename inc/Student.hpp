@@ -18,14 +18,14 @@ private:
 
 public:
   Student()
-      : Person("", "", Adress(), {{}}, Sex::MALE)
+      : Person("", "", "", {{}}, Sex::MALE)
   {
   }
-  Student(std::string name, std::string lastName, Adress adress,
+  Student(std::string name, std::string lastName, std::string adress,
           std::array<uint8_t, 6> index, Pesel pesel, Sex sex);
 
   std::array<uint8_t, 6> getIndex() const { return a_index_; }
   virtual std::ifstream &input(std::ifstream &ifs);
   virtual std::ostream &output(std::ostream &os) const;
-  virtual std::string getProffesion() const { return "Student"; }
+  virtual std::string getProfession() const { return "Student"; }
 };

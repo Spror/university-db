@@ -1,12 +1,12 @@
 #include <Student.hpp>
-Student::Student(std::string name, std::string lastName, Adress adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
+Student::Student(std::string name, std::string lastName, std::string adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
     : Person(name, lastName, adress, pesel, sex), a_index_{index}
 {
 }
 
 std::ostream &Student::output(std::ostream &os) const
 {
-    os << "#### Student "
+    os << "\n#### Student "
        << "\n Index: ";
     for (const auto &it : a_index_)
     {
@@ -34,8 +34,7 @@ std::ostream &Student::output(std::ostream &os) const
         os << static_cast<int>(it);
     }
 
-    os << "\n"
-       << adress_;
+    os << "\n Adress: " << adress_;
     return os;
 }
 
@@ -74,22 +73,8 @@ std::ifstream &Student::input(std::ifstream &ifs)
     std::getline(ifs, line);
     pesel_str = line.substr(line.find(": ") + 2);
 
-    std::getline(ifs, line); // Skip the Address data line
-
-    std::getline(ifs, line); // Read the City line
-    adress_.city = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Street line
-    adress_.street = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Post-code line
-    adress_.postCode = line.substr(line.find(": ") + 2);
-
-    std::getline(ifs, line); // Read the Apartment number line
-    adress_.apartamentNumber = std::stoi(line.substr(line.find(": ") + 2));
-
-    std::getline(ifs, line); // Read the Flat number line
-    adress_.flatNumber = std::stoi(line.substr(line.find(": ") + 2));
+    std::getline(ifs, line); 
+    adress_ = line.substr(line.find(": ") + 2);
 
     if (sex_str == "Male")
     {
