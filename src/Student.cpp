@@ -1,5 +1,5 @@
 #include <Student.hpp>
-Student::Student(std::string name, std::string lastName, std::string adress, std::array<uint8_t, 6> index, Pesel pesel, Sex sex)
+Student::Student(std::string name, std::string lastName, std::string adress, std::array<size_t, 6> index, Pesel pesel, Sex sex)
     : Person(name, lastName, adress, pesel, sex), a_index_{index}
 {
 }
@@ -38,9 +38,9 @@ std::ostream &Student::output(std::ostream &os) const
     return os;
 }
 
-std::array<uint8_t, 6> Student::stringToIndex(std::string index_str)
+std::array<size_t, 6> Student::stringToIndex(std::string index_str)
 {
-    std::array<uint8_t, 6> a_index;
+    std::array<size_t, 6> a_index;
     size_t inc{0};
     if (index_str.size() == 6)
     {
@@ -73,7 +73,7 @@ std::ifstream &Student::input(std::ifstream &ifs)
     std::getline(ifs, line);
     pesel_str = line.substr(line.find(": ") + 2);
 
-    std::getline(ifs, line); 
+    std::getline(ifs, line);
     adress_ = line.substr(line.find(": ") + 2);
 
     if (sex_str == "Male")

@@ -60,8 +60,8 @@ std::ifstream &Employee::input(std::ifstream &ifs)
     std::getline(ifs, line);
     pesel_str = line.substr(line.find(": ") + 2);
 
-    std::getline(ifs, line); 
-    adress_= line.substr(line.find(": ") + 2);
+    std::getline(ifs, line);
+    adress_ = line.substr(line.find(": ") + 2);
 
     if (sex_str == "Male")
     {

@@ -10,8 +10,6 @@ enum class Sex
     FEMALE
 };
 
-
-
 class Person
 {
 protected:
@@ -21,15 +19,15 @@ protected:
     Pesel pesel_;
     Sex sex_;
 
-    std::array<uint8_t, 11> stringToPesel(std::string pesel_str) const;
+    std::array<size_t, 11> stringToPesel(std::string pesel_str) const;
 
 public:
-    Person(std::string name, std::string lastName, std::string  adress, Pesel pesel,
+    Person(std::string name, std::string lastName, std::string adress, Pesel pesel,
            Sex sex);
 
     std::string getName() const { return name_; }
     std::string getLastName() const { return lastName_; }
-    std::string  getAddres() const { return adress_; }
+    std::string getAddres() const { return adress_; }
     Pesel getPesel() const { return pesel_; }
     Sex getSex() const { return sex_; }
 
@@ -41,7 +39,6 @@ public:
     virtual std::string getProfession() const = 0;
     virtual ~Person() = default;
 };
-
 
 inline std::ostream &operator<<(std::ostream &os, const Person &obj) { return obj.output(os); }
 inline std::ifstream &operator>>(std::ifstream &ifs, Person &obj) { return obj.input(ifs); }

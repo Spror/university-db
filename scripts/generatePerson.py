@@ -37,24 +37,23 @@ def generatePerson():
         print(lastName)
         print(sex)
         print(salary)
-        print(profession)
         print(adress)
+        print(pesel)
         
     else:
         random_index = random.randint(0, 999999)
         index = f"{random_index:06d}"
         print(profession)
-        print(index)
         print(firstName)
         print(lastName)
         print(sex)
-        print(pesel)
+        print(index)
         print(adress)
+        print(pesel)
         
 
-
 def randomSex():
-    sexes = ["male", "female"]
+    sexes = ["MALE", "FEMALE"]
     return random.choice(sexes)
 
 def randomProfession():

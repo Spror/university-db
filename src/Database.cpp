@@ -116,11 +116,11 @@ void Database::sortBySalary()
         {
             return (*(std::dynamic_pointer_cast<Employee>(s1)).get()).getSalary() > (*(std::dynamic_pointer_cast<Employee>(s2)).get()).getSalary();
         }
-        else if((*s1.get()).getProfession() == "Employee" && (*s2.get()).getProfession() == "Student")
+        else if ((*s1.get()).getProfession() == "Employee" && (*s2.get()).getProfession() == "Student")
         {
             return true;
         }
-        else if((*s1.get()).getProfession() == "Student" && (*s2.get()).getProfession() == "Employee")
+        else if ((*s1.get()).getProfession() == "Student" && (*s2.get()).getProfession() == "Employee")
         {
             return false;
         }
@@ -133,7 +133,7 @@ void Database::sortBySalary()
     sortStudents(&condition);
 }
 
-bool Database::deleteByIndex(std::array<uint8_t, 6> const index)
+bool Database::deleteByIndex(std::array<size_t, 6> const index)
 {
 
     auto condition = [index](std::shared_ptr<Person> const &s)
@@ -238,25 +238,84 @@ bool Database::readFromFile(const std::string &filename)
     return true;
 }
 
-void Database::generateData(size_t personNumber)
+void Database::generateData(size_t peopleNumber)
 {
-    std::string command = "python3 ../scripts/generatePerson.py";
-    std::string output;
+    for (auto i = 0; i < peopleNumber; i++)
+    {
+        std::string command = "python3 ../scripts/generatePerson.py";
+        std::string output;
 
-        FILE* pipe = popen(command.c_str(), "r");
-    if (pipe == nullptr) {
-        std::cerr << "Error running Python script." << std::endl;
-        exit(-1);
+        FILE *pipe = popen(command.c_str(), "r");
+        if (pipe == nullptr)
+        {
+            std::cerr << "Error running Python script." << std::endl;
+            exit(-1);
+        }
+
+        char buffer[128];
+        while (fgets(buffer, sizeof(buffer), pipe) != nullptr)
+        {
+            output += buffer;
+        }
+
+        pclose(pipe);
+
+        addPerson(output);
+    }
+}
+
+void Database::addPerson(std::string personData)
+{
+
+    std::vector<std::string> parts_v;
+    std::size_t start = 0;
+    std::size_t end = personData.find('\n');
+    Sex sex;
+
+    while (end != std::string::npos)
+    {
+        parts_v.push_back(personData.substr(start, end - start));
+        start = end + 1;
+        end = personData.find('\n', start);
     }
 
-    char buffer[128];
-    while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-        output += buffer;
+    if (start < personData.size())
+    {
+        parts_v.push_back(personData.substr(start));
     }
 
-    pclose(pipe);
+    if (parts_v[0] == "Employee")
+    {
+        if (parts_v[3] == "MALE")
+        {
+            sex = Sex::MALE;
+        }
+        else
+            sex = Sex::FEMALE;
 
-    // Display the output
-    std::cout << "Output of script.py:" << std::endl;
-    std::cout << output << std::endl;
+        auto address = parts_v[5] + parts_v[6];
+        Employee employeeToAdd{parts_v[1], parts_v[2], address, {parts_v[7]}, sex, std::stof(parts_v[4])};
+        v_persons_.push_back(std::make_shared<Employee>(employeeToAdd));
+    }
+    else
+    {
+        if (parts_v[3] == "MALE")
+        {
+            sex = Sex::MALE;
+        }
+        else
+            sex = Sex::FEMALE;
+
+        auto address = parts_v[5] + parts_v[6];
+        std::array<size_t, 6> index;
+
+        // Convert the string to a std::array
+        for (size_t i = 0; i < index.size(); ++i)
+        {
+            index[i] = static_cast<size_t>(parts_v[4][i] - '0');
+        }
+
+        Student studentToAdd{parts_v[1], parts_v[2], address, index, {parts_v[7]}, sex};
+        v_persons_.push_back(std::make_shared<Student>(studentToAdd));
+    }
 }

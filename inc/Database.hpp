@@ -22,13 +22,14 @@ private:
     template <typename F>
     void sortStudents(const F *func);
 
+    void addPerson(std::string peopleNumber);
+
 public:
     bool add(Student const &student);
     bool add(Employee const &employee);
 
-    
     auto getDatabaseSize() const { return v_persons_.size(); }
-    
+
     void display();
 
     std::vector<std::shared_ptr<Person>> getPersons() const { return v_persons_; }
@@ -41,7 +42,7 @@ public:
     void generateData(size_t personNumber);
 
     bool modifySalary(Pesel pesel, float newSalary);
-    bool deleteByIndex(std::array<uint8_t, 6> const index);
+    bool deleteByIndex(std::array<size_t, 6> const index);
 
     bool saveToFile(const std::string &filename);
     bool readFromFile(const std::string &filename);

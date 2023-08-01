@@ -1,9 +1,7 @@
 #include <Person.hpp>
 
-Person::Person(std::string name, std::string lastName, std::string adress, Pesel pesel, Sex sex) : name_{
-                                                                                                  name,
-                                                                                              },
-                                                                                              lastName_{lastName}, adress_{adress}, pesel_{pesel}, sex_{sex}
+Person::Person(std::string name, std::string lastName, std::string adress, Pesel pesel, Sex sex)
+: name_{name}, lastName_{lastName}, adress_{adress}, pesel_{pesel}, sex_{sex}
 {
 }
 
@@ -19,10 +17,9 @@ bool Person::operator!=(const Person &s1) const
 
 
 
-std::array<uint8_t, 11> Person::stringToPesel(std::string pesel_str) const
+std::array<size_t, 11> Person::stringToPesel(std::string pesel_str) const
 {
-
-    std::array<uint8_t, 11> a_pesel;
+    std::array<size_t, 11> a_pesel;
     size_t inc{0};
     if (pesel_str.size() == 11)
     {
@@ -31,6 +28,5 @@ std::array<uint8_t, 11> Person::stringToPesel(std::string pesel_str) const
             a_pesel[inc++] = it - '0';
         }
     }
-
     return a_pesel;
 }

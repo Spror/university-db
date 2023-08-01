@@ -9,10 +9,10 @@ private:
 
 public:
     Employee()
-        : Person("", "", "", {{}}, Sex::MALE)
+        : Person("", "", "", {}, Sex::MALE)
     {
     }
-    Employee(std::string name, std::string lastName, std::string  adress, Pesel pesel,
+    Employee(std::string name, std::string lastName, std::string adress, Pesel pesel,
              Sex sex, float salary);
 
     float getSalary() const { return salary_; }
